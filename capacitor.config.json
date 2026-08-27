@@ -1,0 +1,8 @@
+{
+  "appId": "com.journal.app",
+  "appName": "D-Journal",
+  "webDir": "frontend/dist",
+  "server": {
+    "cleartext": true
+  }
+}
