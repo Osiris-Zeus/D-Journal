@@ -36,8 +36,17 @@ router.get('/', async (req: AuthRequest, res, next) => {
       const pnl = pt.reduce((s, t) => s + (t.pnl ?? 0), 0);
       return { id: p.id, name: p.name, startingBalance: p.startingBalance, currentBalance: p.startingBalance + pnl, pnl, color: p.color };
     });
-    const totalBalance = projectsWithBalance.reduce((s, p) => s + p.currentBalance, 0);
-    const startingBalanceTotal = projects.reduce((s, p) => s + p.startingBalance, 0);
+    const selectedProject = projectId
+      ? projectsWithBalance.find(p => p.id === projectId)
+      : undefined;
+
+    const totalBalance = selectedProject
+      ? selectedProject.currentBalance
+      : projectsWithBalance.reduce((s, p) => s + p.currentBalance, 0);
+
+    const startingBalanceTotal = selectedProject
+      ? selectedProject.startingBalance
+      : projects.reduce((s, p) => s + p.startingBalance, 0);
 
     // Daily / Weekly / Monthly PnL
     const dailyMap = new Map<string, number>();

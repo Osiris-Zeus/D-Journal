@@ -10,7 +10,7 @@ export default function Dashboard() {
   if (!stats) return <div className="p-8 text-center text-slate-500">Loading dashboard…</div>;
 
   const o = stats.overview;
-  const currency = projects.find(p=>p.id===selectedProject)?.currency || 'USD';
+  const currency = projects.find(p=>p.id===selectedProject)?.currency || 'INR';
   const cards = [
     { label: 'Total P/L', value: formatCurrency(o.totalPnL, currency), sub: `${o.totalTrades} trades`, icon: o.totalPnL>=0? TrendingUp: TrendingDown, color: o.totalPnL>=0?'text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10':'text-red-600 bg-red-50 dark:bg-red-500/10' },
     { label: 'Win Rate', value: `${o.winRate.toFixed(1)}%`, sub: `${o.wins}W • ${o.losses}L • ${o.breakeven}BE`, icon: Award, color: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-500/10' },

@@ -8,6 +8,7 @@ export default function Analysis(){
   const { analyses, projects, refresh, selectedProject } = useData();
   const [show, setShow]=useState(false);
   const [search, setSearch]=useState('');
+  const [viewImage, setViewImage] = useState<string | null>(null);
   const [form, setForm]=useState({ projectId: selectedProject!=='all'? selectedProject:'', title:'', notes:'', tags:'', imageUrl:'' });
   const [uploading, setUploading]=useState(false);
   const [saving, setSaving]=useState(false);
@@ -76,8 +77,16 @@ export default function Analysis(){
         {filtered.map(a=>(
           <div key={a.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden flex flex-col">
             <div className="relative group">
-              <img src={a.imageUrl} alt={a.title} className="w-full aspect-[16/10] object-cover bg-slate-100" />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition" />
+              <img
+                src={a.imageUrl}
+                alt={a.title}
+                onClick={() => {
+                  console.log("IMAGE CLICKED");
+                  setViewImage(a.imageUrl);
+                }}
+                className="w-full aspect-[16/10] object-cover bg-slate-100 cursor-pointer hover:opacity-90 transition"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition pointer-events-none" />
               <button onClick={()=>del(a.id)} className="absolute top-2 right-2 p-2 rounded-xl bg-white/90 dark:bg-slate-900/90 text-red-600 opacity-0 group-hover:opacity-100 transition"><Trash2 size={16}/></button>
             </div>
             <div className="p-4 flex-1">
@@ -128,6 +137,26 @@ export default function Analysis(){
           </form>
         </div>
       )}
+        {viewImage && (
+          <div
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setViewImage(null)}
+          >
+            <button
+              onClick={() => setViewImage(null)}
+              className="absolute top-4 right-4 p-2 rounded-xl bg-white/90 text-slate-900 hover:bg-white"
+            >
+              <X size={22} />
+            </button>
+
+            <img
+              src={viewImage}
+              alt="Analysis"
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
+            />
+          </div>
+        )}
     </div>
   );
 }
