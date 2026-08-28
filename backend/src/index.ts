@@ -18,6 +18,7 @@ import { errorHandler } from './middleware/error';
 const app = express();
 const PORT = parseInt(process.env.PORT || '4000', 10);
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(cors({
